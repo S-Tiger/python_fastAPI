@@ -5,9 +5,9 @@ import uuid
 from fastapi import UploadFile, HTTPException
 from sqlalchemy.orm import Session
 
-from domains.attachments.models import Attachment
-from domains.documents.models import Document
-from domains.documents.repository import DocumentRepository
+from app.domains.attachments.models import Attachment
+from app.domains.documents.models import Document
+from app.domains.documents.repository import DocumentRepository
 
 
 class DocumentService:
@@ -42,6 +42,7 @@ class DocumentService:
                 original_file_name=original_file_name,
                 stored_file_name=stored_file_name,
                 file_path=saved_file_path,
+                author=author,
             )
 
             # db.add(db_attachment)를 생략해도,

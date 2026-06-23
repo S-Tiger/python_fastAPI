@@ -2,9 +2,9 @@
 from fastapi import APIRouter, Depends, Form, UploadFile, File, status
 from sqlalchemy.orm import Session
 
-from core.database import get_db
-from domains.documents.schemas import DocumentResponse
-from domains.documents.service import DocumentService
+from app.core.database import get_db
+from app.domains.documents.schemas import DocumentResponse
+from app.domains.documents.service import DocumentService
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 

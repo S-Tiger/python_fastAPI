@@ -3,7 +3,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from domains.attachments.schemas import AttachmentResponse
+from app.domains.attachments.schemas import AttachmentResponse
 
 
 class DocumentResponse(BaseModel):

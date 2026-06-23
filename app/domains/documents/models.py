@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, func, ForeignKey
 from sqlalchemy.orm import relationship
 
-from core.database import Base
+from app.core.database import Base
 
 
 class Document(Base):
@@ -16,7 +16,7 @@ class Document(Base):
     # 다른 게시글이 이 파일을 공유할 수 없도록 unique=True를 반드시 걸어 1:1을 강제합니다.
     attachment_id = Column(
         Integer,
-        ForeignKey('attachments.document_id', ondelete='CASCADE'), # 글이 지워져도 파일 이력은 남기거나, 비즈니스에 따라 CASCADE 설정
+        ForeignKey('attachments.attachment_id', ondelete='CASCADE'), # 글이 지워져도 파일 이력은 남기거나, 비즈니스에 따라 CASCADE 설정
         unique=True
         , index=True
     )

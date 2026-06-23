@@ -1,8 +1,8 @@
 # app/domins/documents/repository.py
 from sqlalchemy.orm import Session
 
-from domains.attachments.models import Attachment
-from domains.documents.models import Document
+from app.domains.attachments.models import Attachment
+from app.domains.documents.models import Document
 
 
 class DocumentRepository:
@@ -17,6 +17,7 @@ class DocumentRepository:
         db_document = Document(
             document_title=document_title,
             key_word=key_word,
+            author=author,
             attachment=attachment
         )
 

@@ -8,6 +8,8 @@ from app.core.config import settings
 from app.core.database import engine, Base
 from app.domains.posts import router as post_router
 from app.domains.documents import router as document_router
+from app.domains.apitest import router as api_router
+from app.domains.llmtest import router as llm_router
 
 
 # 앱 구동 시 PostgreSQL에 테이블 자동 생성 (실무 대규모 앱은 주로 alembic 마이그레이션 도구를 병행함)
@@ -32,6 +34,8 @@ app.add_middleware(
 # 도메인 라우터 조립
 app.include_router(post_router.router)
 app.include_router(document_router.router)
+app.include_router(api_router.router)
+app.include_router(llm_router.router)
 
 @app.get("/health-check", tags=["System"])
 def health_check():
