@@ -24,6 +24,10 @@ class settings(BaseSettings):
     LLM_TEMPERATURE: float = 0.3
     LLM_MAX_TOKENS: int = 1024
 
+    ELASTICSEARCH_URL: str = "http://localhost:9200"
+    ELASTICSEARCH_INDEX: str = "uvfapi_vector_idx"
+    OLLAMA_EMBEDDING_MODEL: str = "bge-m3"
+
     @property
     def DATABASE_URL(self) -> str:
         return f"postgresql+psycopg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
