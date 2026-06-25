@@ -1,5 +1,5 @@
 # app/domains/llmtest/client.py
-
+from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
@@ -100,3 +100,13 @@ class ElasticsearchRagClient:
     async def ask_rag_async(self, question: str) -> str:
         """컨텍스트 검색 후 EXAONE 3.5 모델 기반 생성(RAG) 구동"""
         return await self.rag_chain.ainvoke(question)
+
+    async def add_langchain_documents_async(self, documents: list[Document]):
+        """
+        [확장] 텍스트와 메타데이터(출처, 페이지 번호 등)가 결합된
+        LangChain Document 세트를 Elasticsearch 벡터 인덱스에 벌크 적재합니다.
+        """
+        if not documents:
+            return
+        # 엘라스틱서치 스토어의 비동기 문서 적재 API 호출
+        await self.vector_store.aadd_documents(documents=documents)

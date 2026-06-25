@@ -1,9 +1,8 @@
 # app/domains/llmtest/router.py
-from fastapi import APIRouter, status
-from fastapi.params import Depends
+from fastapi import APIRouter, status, UploadFile
+from fastapi.params import Depends, File
 from pydantic import BaseModel
 
-from app.domains.apitest.router import get_apitest_service
 from app.domains.llmtest.schemas import ChatRequest, ChatResponse
 from app.domains.llmtest.service import LlmTestService
 
@@ -40,3 +39,19 @@ async def query_rag(
 ):
     """Elasticsearch k-NN 검색 연동 EXAONE 3.5 RAG 질의 API"""
     return await service.get_rag_answer(request)
+
+
+@router.post("/upload-pdf", status_code=status.HTTP_201_CREATED)
+async def upload_pdf_knowledge(
+        file: UploadFile = File(..., description="적재할 사내 가이드라인 및 지식 PDF 파일"),
+        service: LlmTestService = Depends(get_llmtest_service)
+):
+    """
+    [Multipart File Upload] PDF 지식 도큐먼트 파싱 및 벡터 DB 적재 API
+    """
+    # 확장자 검증 보안 가드 벨트
+    if not file.filename.lower().endswith('.pdf'):
+        from fastapi import HTTPException
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+
+    return await service.process_and_ingest_pdf(file)
