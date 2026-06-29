@@ -55,3 +55,16 @@ async def upload_pdf_knowledge(
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
 
     return await service.process_and_ingest_pdf(file)
+
+
+@router.post("/upload", status_code=status.HTTP_201_CREATED)
+async def upload_any_document(
+    file: UploadFile = File(..., description="통합 적재할 문서 파일 (PDF, DOCX, HWP 지원)"),
+    service: LlmTestService = Depends(get_llmtest_service)
+):
+    """
+    [Universal Document Ingestion]
+    파일의 종류(PDF, Word, 한글)에 상관없이 단일 창구로 수진하여
+    자동 파싱, 청킹 및 Elasticsearch 벡터스토어 연동을 일괄 처리하는 마스터 API
+    """
+    return await service.ingest_document(file)
